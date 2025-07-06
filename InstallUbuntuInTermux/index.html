@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Termux安装Ubuntu教程 | 新手指南</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.4)), url('./bg.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #e0e0e0;
+            line-height: 1.6;
+            padding: 20px;
+            background-position: top;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(90, 150, 230, 0.3);
+            background: rgba(20, 25, 40, 0.6);
+            backdrop-filter: blur(8px);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(90, 150, 230, 0.3);
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            color: #4fc3f7;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 5px rgba(0, 150, 255, 0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #81d4fa;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .step {
+            background: rgba(30, 35, 55, 0.3);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border-left: 4px solid #66CCFF;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 100, 200, 0.2);
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .step-number {
+            background: #66ccff;
+            color: #00264d;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            color: #66ccff;
+        }
+
+        .step-content {
+            padding-left: 51px;
+        }
+
+        .step p {
+            margin-bottom: 20px;
+            font-size: 1.05rem;
+        }
+
+        .code-container {
+            position: relative;
+            background: #0d1b2a;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 15px 0;
+            border: 1px solid rgba(90, 150, 230, 0.3);
+            overflow-x: auto;
+        }
+
+        code {
+            color: #66CCFF;
+            font-family: 'Fira Code', monospace;
+            font-size: 1rem;
+            white-space: nowrap;
+        }
+
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #4fc3f7, #2196f3);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.05rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(33, 150, 243, 0.3);
+            margin: 5px 0;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(33, 150, 243, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(1px);
+        }
+
+        .link-box {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(33, 150, 243, 0.15);
+            border-radius: 8px;
+            padding: 12px 20px;
+            margin: 10px 0;
+            border: 1px solid rgba(33, 150, 243, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .link-box:hover {
+            background: rgba(33, 150, 243, 0.25);
+            transform: translateY(-3px);
+        }
+
+        .link-box i {
+            margin-right: 10px;
+            font-size: 1.4rem;
+        }
+
+        .download-link {
+            color: #4fc3f7;
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 1.1rem;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #8be9fd;
+            border-radius: 6px;
+            padding: 6px 12px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .copy-tooltip {
+            position: absolute;
+            top: -30px;
+            right: 0;
+            background: #4fc3f7;
+            color: #00264d;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+
+        .tip-box {
+            background: rgba(255, 215, 0, 0.15);
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            margin: 20px 0;
+            font-size: 0.95rem;
+        }
+
+        .tip-title {
+            display: flex;
+            align-items: center;
+            color: #ffc107;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .tip-title i {
+            margin-right: 8px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(90, 150, 230, 0.3);
+            color: #81d4fa;
+            font-size: 0.9rem;
+        }
+
+        .key-point {
+            color: #81d4fa;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            .step-content {
+                padding-left: 0;
+            }
+
+            .code-container {
+                padding: 12px;
+            }
+
+            .step-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .step-number {
+                margin-bottom: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-terminal"></i> Termux 安装 Ubuntu 教程</h1>
+            <p class="subtitle">如何在Android手机上运行精简的Ubuntu系统 |Termux</p>
+        </header>
+
+        <!-- 第一步 -->
+        <section class="step">
+            <div class="step-header">
+                <div class="step-number">1</div>
+                <h2>下载并安装Termux</h2>
+            </div>
+            <div class="step-content">
+                <p>Termux是一个强大的Android终端模拟器，也是我们运行Linux环境的基础。</p>
+
+                <p>请点击下方按钮下载Termux应用：</p>
+
+                <div class="link-box">
+                    <i class="fas fa-download"></i>
+                    <a href="https://www.123684.com/s/OvkLVv-GdV0h" class="download-link" target="_blank">点此下载Termux</a>
+                </div>
+
+                <p class="tip-box">
+                    <span class="tip-title"><i class="fas fa-lightbulb"></i> 温馨提示</span>
+                    中国可能无法访问GooglePlay，这里up主提供的是123云盘的链接
+                </p>
+            </div>
+        </section>
+
+        <!-- 第二步 -->
+        <section class="step">
+            <div class="step-header">
+                <div class="step-number">2</div>
+                <h2>更新软件包索引</h2>
+            </div>
+            <div class="step-content">
+                <p>安装完成后打开Termux，首先我们需要更新包索引以确保获取最新的软件包信息：</p>
+
+                <div class="code-container">
+                    <code>apt update</code>
+                    <button class="copy-btn" onclick="copyCode(this)">复制代码</button>
+                </div>
+
+                <p>该命令会连接Termux的软件仓库，下载最新的软件包列表信息。</p>
+
+                <p class="tip-box">
+                    <span class="tip-title"><i class="fas fa-lightbulb"></i> 操作说明</span>
+                    在Termux中，你可以使用音量上/下键作为方向键，或者使用手机屏幕键盘输入命令。
+                    输完命令后按回车执行。首次更新可能需要几分钟时间，请耐心等待。
+                </p>
+            </div>
+        </section>
+
+        <!-- 第三步 -->
+        <section class="step">
+            <div class="step-header">
+                <div class="step-number">3</div>
+                <h2>安装proot-distro工具</h2>
+            </div>
+            <div class="step-content">
+                <p>proot-distro是一个方便的工具，可以让我们在Termux中轻松安装和管理Linux发行版：</p>
+
+                <div class="code-container">
+                    <code>apt install proot-distro</code>
+                    <button class="copy-btn" onclick="copyCode(this)">复制代码</button>
+                </div>
+
+                <p>安装过程中会出现提示，询问是否继续安装。请按<span class="key-point">回车键</span>确认安装。</p>
+
+                <p>proot-distro提供了多个Linux发行版的支持，包括Ubuntu、Debian、Alpine等。</p>
+
+                <p class="tip-box">
+                    <span class="tip-title"><i class="fas fa-info-circle"></i> 注意</span>
+                    如果安装过程中提示磁盘空间不足，请确保你的设备有至少500MB的可用空间。
+                    Ubuntu系统安装后大约会占用300-400MB空间。
+                </p>
+            </div>
+        </section>
+
+        <!-- 第四步 -->
+        <section class="step">
+            <div class="step-header">
+                <div class="step-number">4</div>
+                <h2>安装轻量级Ubuntu</h2>
+            </div>
+            <div class="step-content">
+                <p>现在我们将使用proot-distro安装Ubuntu Linux发行版：</p>
+
+                <div class="code-container">
+                    <code>proot-distro install ubuntu</code>
+                    <button class="copy-btn" onclick="copyCode(this)">复制代码</button>
+                </div>
+
+                <p>这个过程会下载并安装Ubuntu系统文件，可能需要5-15分钟（取决于你的网络速度）。</p>
+
+                <p>安装完成后，你可以使用以下命令查看已安装的Linux发行版：</p>
+
+                <div class="code-container">
+                    <code>proot-distro list</code>
+                    <button class="copy-btn" onclick="copyCode(this)">复制代码</button>
+                </div>
+
+                <p class="tip-box">
+                    <span class="tip-title"><i class="fas fa-lightbulb"></i> 补充知识</span>
+                    这里安装的是Ubuntu的轻量级版本，移除了不必要的服务以节省空间和资源。
+                    但你仍然可以按照需要安装任何软件包（如Python、Node.js、GCC等）。
+                </p>
+            </div>
+        </section>
+
+        <!-- 第五步 -->
+        <section class="step">
+            <div class="step-header">
+                <div class="step-number">5</div>
+                <h2>启动Ubuntu并进行测试</h2>
+            </div>
+            <div class="step-content">
+                <p>现在你可以启动刚刚安装的Ubuntu系统了：</p>
+
+                <div class="code-container">
+                    <code>proot-distro login ubuntu</code>
+                    <button class="copy-btn" onclick="copyCode(this)">复制代码</button>
+                </div>
+
+                <p>命令执行后，你会看到命令提示符变成了类似<span class="key-point">root@localhost:</span>的形式，表示你已经进入了Ubuntu环境。</p>
+
+                <p>输入以下命令验证当前系统和版本：</p>
+
+                <div class="code-container">
+                    <code>lsb_release -a</code>
+                    <button class="copy-btn" onclick="copyCode(this)">复制代码</button>
+                </div>
+
+                <p>如果看到类似<span class="key-point">Ubuntu 22.04 LTS</span>的输出，说明Ubuntu已成功运行！</p>
+
+                <p>要退出Ubuntu环境回到Termux，请输入：</p>
+
+                <div class="code-container">
+                    <code>exit</code>
+                    <button class="copy-btn" onclick="copyCode(this)">复制代码</button>
+                </div>
+
+                <p class="tip-box">
+                    <span class="tip-title"><i class="fas fa-lightbulb"></i> 高级提示</span>
+                    在Ubuntu环境中，你可以正常安装软件包。首先使用<span class="key-point">apt update</span>更新Ubuntu的软件包列表，
+                    然后使用<span class="key-point">apt install 包名</span>安装软件（例如安装Python：<span class="key-point">apt install
+                        python3</span>）
+                </p>
+            </div>
+        </section>
+
+        <!-- 第六步 -->
+        <section class="step">
+            <div class="step-header">
+                <div class="step-number">6</div>
+                <h2>设置自动启动Ubuntu</h2>
+            </div>
+            <div class="step-content">
+                <p>每次启动Termux都需要手动输入登录命令很麻烦，我们可以设置自动启动Ubuntu：</p>
+
+                <p>首先，编辑Termux的启动配置文件：</p>
+
+                <div class="code-container">
+                    <code>vim ./.bashrc</code>
+                    <button class="copy-btn" onclick="copyCode(this)">复制代码</button>
+                </div>
+
+                <p>在文件末尾添加以下命令：</p>
+
+                <div class="code-container">
+                    <code>proot-distro login ubuntu</code>
+                    <button class="copy-btn" onclick="copyCode(this)">复制代码</button>
+                </div>
+
+                <p>然后保存并退出vim编辑器：</p>
+
+                <div class="code-container">
+                    <code>按ESC键 → 输入:wq → 按回车</code>
+                    <button class="copy-btn" onclick="copyCode(this)">复制操作</button>
+                </div>
+
+                <p>这样每次启动Termux时，系统都会自动进入Ubuntu环境。</p>
+
+                <p class="tip-box">
+                    <span class="tip-title"><i class="fas fa-book"></i> Vim教程</span>
+                    如果你不熟悉vim编辑器：<br>
+                    1. 按<span class="key-point">i</span>键进入编辑模式<br>
+                    2. 移动光标到文件底部<br>
+                    3. 输入命令<span class="key-point">proot-distro login ubuntu</span><br>
+                    4. 按<span class="key-point">ESC</span>键退出编辑模式<br>
+                    5. 输入<span class="key-point">:wq</span>保存并退出<br>
+                </p>
+
+                <p>现在尝试退出Termux再重新打开，看看是否自动进入Ubuntu环境了？</p>
+            </div>
+        </section>
+
+        <section class="step">
+            <div class="step-header">
+                <div class="step-number">🎉</div>
+                <h2>恭喜你完成安装！</h2>
+            </div>
+            <div class="step-content">
+                <p>你已经成功在Android设备上运行了精简的Ubuntu系统！</p>
+                <p>你现在可以：</p>
+                <ul>
+                    <li>安装Python、Node.js等开发环境</li>
+                    <li>使用Git进行版本控制</li>
+                    <li>运行轻量级服务器应用</li>
+                    <li>学习Linux命令和系统管理</li>
+                    <li>通过SSH连接其他服务器</li>
+                </ul>
+                <br>
+                <a href="https://space.bilibili.com/1978487514" class="btn" target="_blank">
+                    <i class="fas fa-external-link-alt"></i> 访问up主的B站个人主页
+                </a>
+                <a href="https://system-intel-mic.github.io" class="btn" target="_blank"
+                    style="background: linear-gradient(135deg, #66CCFF, #a3c9ea);">
+                    <i class="fas fa-book"></i> up主的个人网站
+                </a>
+            </div>
+        </section>
+
+        <footer>
+            <p><i class="fas fa-code"></i> 教程制作 © 2025 | 作者SYSTEM-Intel-MIC</p>
+            <p>免费优质教程，为爱发电！</p>
+        </footer>
+    </div>
+
+    <script>
+        // 复制代码功能
+        function copyCode(button) {
+            const codeContainer = button.parentNode;
+            const codeElement = codeContainer.querySelector('code');
+            const textarea = document.createElement('textarea');
+            textarea.value = codeElement.textContent;
+            document.body.appendChild(textarea);
+            textarea.select();
+
+            try {
+                const successful = document.execCommand('copy');
+                const tooltip = document.createElement('div');
+                tooltip.className = 'copy-tooltip';
+                tooltip.textContent = successful ? '已复制!' : '复制失败';
+                codeContainer.appendChild(tooltip);
+
+                setTimeout(() => {
+                    tooltip.style.opacity = '1';
+                }, 10);
+
+                setTimeout(() => {
+                    tooltip.style.opacity = '0';
+                    setTimeout(() => {
+                        tooltip.remove();
+                    }, 300);
+                }, 1500);
+            } catch (err) {
+                console.error('复制失败:', err);
+            }
+
+            document.body.removeChild(textarea);
+        }
+
+        // 为下载链接添加点击效果
+        const downloadLinks = document.querySelectorAll('.download-link');
+        downloadLinks.forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                const originalText = this.textContent;
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 正在下载...';
+
+                setTimeout(() => {
+                    // 改为在新窗口打开
+                    window.open(this.href, '_blank');
+                    // 恢复原始文本
+                    this.innerHTML = originalText;
+                }, 1500);
+            });
+        });
+    </script>
+</body>
+
+</html>
